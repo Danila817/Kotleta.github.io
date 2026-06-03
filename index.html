@@ -1,119 +1,567 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Моё резюме</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Лабораторная работа №3</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+        /* ========== ГЛОБАЛЬНЫЕ СТИЛИ ДЛЯ ПЕРЕКЛЮЧАТЕЛЯ ========== */
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            transition: background 0.3s ease;
+        }
+
+        /* Контейнер для всего */
+        .app-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
             padding: 20px;
         }
-        .container {
-            max-width: 800px;
+
+        /* Панель переключения заданий */
+        .tab-bar {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            backdrop-filter: blur(5px);
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transform: scale(1.05);
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(255,255,255,0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Контейнеры заданий */
+        .task-container {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .task-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== СТИЛИ ДЛЯ ЗАДАНИЯ 4 (простое резюме) ========== */
+        .task4-wrapper {
+            max-width: 900px;
             margin: 0 auto;
             background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
         }
-        h1 {
+
+        .task4-wrapper h1 {
             text-align: center;
             color: #333;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
         }
-        .photo {
+
+        .task4-wrapper .photo {
             text-align: center;
+            margin-bottom: 20px;
         }
-        img {
+
+        .task4-wrapper .photo img {
             width: 150px;
             height: 150px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid #3498db;
+            border: 3px solid #667eea;
             transition: transform 0.3s;
         }
-        img:hover {
+
+        .task4-wrapper .photo img:hover {
             transform: scale(1.05);
         }
-        .info {
+
+        .task4-wrapper .info {
             margin: 20px 0;
-            padding: 10px;
-            border-left: 5px solid #3498db;
+            padding: 20px;
+            border-left: 5px solid #667eea;
             background: #f9f9f9;
+            border-radius: 10px;
         }
-        input, button {
-            padding: 8px;
+
+        .task4-wrapper .info p {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        .task4-wrapper input, .task4-wrapper button {
+            padding: 10px 15px;
             margin: 5px;
             font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
         }
-        button {
-            background-color: #3498db;
+
+        .task4-wrapper button {
+            background-color: #667eea;
             color: white;
             border: none;
-            border-radius: 5px;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s;
         }
-        button:hover {
-            background-color: #2980b9;
+
+        .task4-wrapper button:hover {
+            background-color: #5a67d8;
+            transform: translateY(-2px);
         }
-        .random-bg-btn {
+
+        .task4-wrapper .random-bg-btn {
             background-color: #e67e22;
         }
-        .random-bg-btn:hover {
+
+        .task4-wrapper .random-bg-btn:hover {
             background-color: #d35400;
+        }
+
+        /* ========== СТИЛИ ДЛЯ ЗАДАНИЯ 6 (современное резюме) ========== */
+        .task6-wrapper section {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .task6-wrapper section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        }
+
+        .task6-wrapper h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #2c3e66;
+            border-left: 5px solid #667eea;
+            padding-left: 15px;
+        }
+
+        .task6-wrapper .profile {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .task6-wrapper .avatar img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .task6-wrapper .profile-info h1 {
+            font-size: 36px;
+            color: #1e2a3e;
+        }
+
+        .task6-wrapper .profile-info .title {
+            font-size: 20px;
+            color: #667eea;
+        }
+
+        /* Карточки опыта */
+        .task6-wrapper .job-card {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .task6-wrapper .job-card:hover {
+            background: #eef2f7;
+            transform: translateX(8px);
+        }
+
+        .task6-wrapper .job-description {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+            background: white;
+            border-radius: 12px;
+            margin-top: 0;
+        }
+
+        .task6-wrapper .job-card.active .job-description {
+            max-height: 200px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        /* Раскрывающиеся списки */
+        .task6-wrapper details {
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .task6-wrapper summary {
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 18px;
+            color: #2c3e66;
+        }
+
+        /* Навыки */
+        .task6-wrapper .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .task6-wrapper .skill-item {
+            background: #f0f4f9;
+            padding: 12px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .task6-wrapper .skill-bar {
+            flex: 1;
+            height: 8px;
+            background: #cbd5e1;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .task6-wrapper .skill-progress {
+            width: 0%;
+            height: 100%;
+            background: #667eea;
+            border-radius: 10px;
+        }
+
+        /* Кнопки задания 6 */
+        .task6-wrapper .btn-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .task6-wrapper .btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            background: #667eea;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .task6-wrapper .btn-outline {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+        }
+
+        .task6-wrapper .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Форма */
+        .task6-wrapper .form-group {
+            margin-bottom: 20px;
+        }
+
+        .task6-wrapper input, .task6-wrapper textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+        }
+
+        .task6-wrapper .error {
+            color: #e26d6d;
+            font-size: 14px;
+        }
+
+        /* Адаптивность задания 6 */
+        @media (max-width: 768px) {
+            .task6-wrapper .profile {
+                flex-direction: column;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <h1>Резюме</h1>
-
-    <div class="photo">
-        <img src="skrudj.jpg">
+<div class="app-wrapper">
+    <!-- Панель переключения -->
+    <div class="tab-bar">
+        <button class="tab-btn active" data-task="task4">(Базовое резюме)</button>
+        <button class="tab-btn" data-task="task6">(Современное резюме + ИИ)</button>
     </div>
 
-    <div class="info">
-        <p><strong>Имя:</strong> <span id="firstName">Данила</span></p>
-        <p><strong>Фамилия:</strong> <span id="lastName">Помельников</span></p>
-        <p><strong>Должность:</strong> Веб-разработчик</p>
-        <p><strong>О себе:</strong> Люблю создавать красивые сайты.</p>
+    <!-- ЗАДАНИЕ 4 -->
+    <div id="task4" class="task-container active">
+        <div class="task4-wrapper">
+            <h1>📄 Моё резюме</h1>
+            
+            <div class="photo">
+                <img src="skrudj.jpg">
+            </div>
+
+            <div class="info">
+                <p><strong>Имя:</strong> <span id="firstName4">Данила</span></p>
+                <p><strong>Фамилия:</strong> <span id="lastName4">Помельников</span></p>
+                <p><strong>Должность:</strong> Веб-разработчик</p>
+                <p><strong>О себе:</strong> Создаю красивые и функциональные сайты.</p>
+            </div>
+
+            <hr style="margin: 20px 0">
+
+            <h3>✏️ Изменить фамилию</h3>
+            <input type="text" id="newLastName4" placeholder="Введите новую фамилию">
+            <button id="changeLastNameBtn4">Изменить фамилию</button>
+
+            <br><br>
+
+            <button id="randomBgBtn4" class="random-bg-btn">🎨 Случайный цвет фона</button>
+        </div>
     </div>
 
-    <hr>
+    <!-- ЗАДАНИЕ 6 -->
+    <div id="task6" class="task-container">
+        <div class="task6-wrapper">
+            <!-- Краткая информация -->
+            <section>
+                <div class="profile">
+                    <div class="avatar">
+                        <img src="https://ya.ru/images/search?from=tabbar&img_url=https%3A%2F%2Fstatic43.tgcnt.ru%2Fposts%2F_0%2F61%2F612fbb475b44aa9fbcd0c2326a60198f.jpg&lr=213&p=2&pos=38&rpt=simage&text=мемы">
+                    </div>
+                    <div class="profile-info">
+                        <h1>Алексей Смирнов</h1>
+                        <div class="title">Frontend-разработчик / React специалист</div>
+                        <div class="bio">Создаю современные, быстрые и адаптивные веб-приложения. Более 4 лет опыта.</div>
+                    </div>
+                </div>
+            </section>
 
-    <h3>Изменить фамилию</h3>
-    <input type="text" id="newLastName" placeholder="Введите новую фамилию">
-    <button id="changeLastNameBtn">Изменить фамилию</button>
+            <!-- Опыт работы -->
+            <section>
+                <h2>💼 Опыт работы</h2>
+                <div class="job-card" onclick="toggleJob(this)">
+                    <div class="job-header"><strong>Frontend-разработчик</strong> <span>2022 — н.в.</span></div>
+                    <div class="job-company">ООО «ТехноВеб»</div>
+                    <div class="job-description">Разработка SPA на React, Redux, TypeScript. Оптимизация производительности.</div>
+                </div>
+                <div class="job-card" onclick="toggleJob(this)">
+                    <div class="job-header"><strong>Верстальщик</strong> <span>2020 — 2022</span></div>
+                    <div class="job-company">Студия «PixelPerfect»</div>
+                    <div class="job-description">Вёрстка лендингов, админок, написание скриптов на ванильном JS.</div>
+                </div>
+            </section>
 
-    <br><br>
+            <!-- Образование -->
+            <section>
+                <h2>🎓 Образование</h2>
+                <details>
+                    <summary>МГТУ СТАНКИН (2016–2020)</summary>
+                    <p>Прикладная информатика, бакалавриат. Диплом скоро будет с (почти)отличием.</p>
+                </details>
+                <details>
+                    <summary>Яндекс.Практикум (2021)</summary>
+                    <p>Курс «Веб-разработчик»: React, Node.js, финальный проект.</p>
+                </details>
+            </section>
 
-    <button id="randomBgBtn" class="random-bg-btn">Случайный цвет фона</button>
+            <!-- Навыки -->
+            <section>
+                <h2>🧠 Ключевые навыки</h2>
+                <div class="skills-grid">
+                    <div class="skill-item"><span>JavaScript/TS</span><div class="skill-bar"><div class="skill-progress" style="width: 90%"></div></div></div>
+                    <div class="skill-item"><span>React / Redux</span><div class="skill-bar"><div class="skill-progress" style="width: 85%"></div></div></div>
+                    <div class="skill-item"><span>HTML5/CSS3</span><div class="skill-bar"><div class="skill-progress" style="width: 95%"></div></div></div>
+                    <div class="skill-item"><span>Git / GitHub</span><div class="skill-bar"><div class="skill-progress" style="width: 85%"></div></div></div>
+                </div>
+            </section>
+
+            <!-- Кнопки -->
+            <div class="btn-group">
+                <button class="btn" id="downloadBtn6">📄 Скачать резюме</button>
+                <button class="btn btn-outline" id="contactScrollBtn6">📧 Связаться со мной</button>
+            </div>
+
+            <!-- Контактная форма -->
+            <section id="contactFormSection6">
+                <h2>✉️ Напишите мне</h2>
+                <form id="feedbackForm6">
+                    <div class="form-group">
+                        <input type="text" id="name6" placeholder="Ваше имя">
+                        <span class="error" id="nameError6"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email6" placeholder="Email">
+                        <span class="error" id="emailError6"></span>
+                    </div>
+                    <div class="form-group">
+                        <textarea rows="3" id="message6" placeholder="Сообщение"></textarea>
+                        <span class="error" id="msgError6"></span>
+                    </div>
+                    <button type="submit" class="btn">Отправить</button>
+                </form>
+                <div id="formStatus6" style="margin-top: 15px;"></div>
+            </section>
+        </div>
+    </div>
 </div>
 
 <script>
-    // Изменение фамилии
-    const changeBtn = document.getElementById("changeLastNameBtn");
-    const lastNameSpan = document.getElementById("lastName");
+    // ========== ПЕРЕКЛЮЧЕНИЕ МЕЖДУ ЗАДАНИЯМИ ==========
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const containers = document.querySelectorAll('.task-container');
 
-    changeBtn.addEventListener("click", function() {
-        let newName = document.getElementById("newLastName").value;
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const taskId = btn.getAttribute('data-task');
+            
+            // Обновляем активные кнопки
+            tabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Показываем нужный контейнер
+            containers.forEach(container => container.classList.remove('active'));
+            document.getElementById(taskId).classList.add('active');
+        });
+    });
+
+    // ========== ФУНКЦИОНАЛ ЗАДАНИЯ 4 ==========
+    // Изменение фамилии
+    document.getElementById('changeLastNameBtn4').addEventListener('click', function() {
+        let newName = document.getElementById('newLastName4').value;
         if (newName.trim() !== "") {
-            lastNameSpan.textContent = newName;
+            document.getElementById('lastName4').textContent = newName;
         } else {
             alert("Введите фамилию!");
         }
     });
 
-    // Случайный цвет фона
-    const randomBtn = document.getElementById("randomBgBtn");
-    randomBtn.addEventListener("click", function() {
+    // Случайный цвет фона (только для задания 4)
+    document.getElementById('randomBgBtn4').addEventListener('click', function() {
         let r = Math.floor(Math.random() * 256);
         let g = Math.floor(Math.random() * 256);
         let b = Math.floor(Math.random() * 256);
-        document.body.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+        document.querySelector('.task4-wrapper').style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+        document.querySelector('.task4-wrapper').style.transition = "background 0.3s";
+    });
+
+    // ========== ФУНКЦИОНАЛ ЗАДАНИЯ 6 ==========
+    // Выезжающие описания
+    window.toggleJob = function(element) {
+        element.classList.toggle('active');
+    };
+
+    // Кнопка "Скачать резюме"
+    document.getElementById('downloadBtn6').addEventListener('click', function() {
+        const resumeText = `Резюме: Помельников Данила\nФронтенд-разработчик\nОпыт: 4+ года\nНавыки: React, JS, TS, HTML/CSS, Git`;
+        const blob = new Blob([resumeText], {type: 'text/plain'});
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'resume_alexey.txt';
+        link.click();
+        URL.revokeObjectURL(link.href);
+        alert("Файл резюме скачан (демо-версия)");
+    });
+
+    // Плавный скролл к форме
+    document.getElementById('contactScrollBtn6').addEventListener('click', function() {
+        document.getElementById('contactFormSection6').scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    });
+
+    // Валидация формы задания 6
+    const form6 = document.getElementById('feedbackForm6');
+    const statusDiv6 = document.getElementById('formStatus6');
+
+    form6.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        let isValid = true;
+        const name = document.getElementById('name6').value.trim();
+        const email = document.getElementById('email6').value.trim();
+        const message = document.getElementById('message6').value.trim();
+        
+        const nameRegex = /^[A-Za-zА-Яа-яЁё\s]{2,}$/;
+        const emailRegex = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
+        
+        document.getElementById('nameError6').textContent = '';
+        document.getElementById('emailError6').textContent = '';
+        document.getElementById('msgError6').textContent = '';
+        
+        if (!name || !nameRegex.test(name)) {
+            document.getElementById('nameError6').textContent = 'Имя должно содержать только буквы (мин. 2 символа)';
+            isValid = false;
+        }
+        
+        if (!email || !emailRegex.test(email)) {
+            document.getElementById('emailError6').textContent = 'Введите корректный email';
+            isValid = false;
+        }
+        
+        if (!message || message.length < 5) {
+            document.getElementById('msgError6').textContent = 'Сообщение не менее 5 символов';
+            isValid = false;
+        }
+        
+        if (isValid) {
+            statusDiv6.innerHTML = '✅ Сообщение отправлено! (демо-режим)';
+            statusDiv6.style.color = '#27ae60';
+            form6.reset();
+            setTimeout(() => { statusDiv6.innerHTML = ''; }, 3000);
+        } else {
+            statusDiv6.innerHTML = '❌ Исправьте ошибки в форме';
+            statusDiv6.style.color = '#e26d6d';
+        }
     });
 </script>
 </body>
