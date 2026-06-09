@@ -1,345 +1,81 @@
-Это задание — отличная практика по работе с событиями и DOM. Я создал для вас адаптивную страницу, где три цветных квадрата управляют цветом фона. В качестве дополнительного бонуса я добавил современную анимацию и эффект наведения, как рекомендовано в разделе про CSS (Индивидуальное задание 4: тени, рамки, изменения цвета при наведении).
+Вот максимально упрощённая версия страницы с тремя цветными квадратами, без лишних эффектов и сложного дизайна:
 
 ```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Цветные квадраты | Интерактивный фон</title>
+    <title>Цветные квадраты</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        /* Основные стили для страницы – современный минимализм */
+        /* Простые стили */
         body {
+            margin: 0;
             min-height: 100vh;
-            background-color: #f0f2f5;
-            font-family: system-ui, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: background-color 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            font-family: Arial, sans-serif;
+            transition: background-color 0.3s;
+        }
+
+        /* Контейнер с квадратами */
+        .container {
+            display: flex;
+            gap: 20px;
             padding: 20px;
         }
 
-        /* Карточка-контейнер – тень, скругления, светлый блок */
-        .color-panel {
-            max-width: 800px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(2px);
-            border-radius: 2.5rem;
-            padding: 2rem 1.5rem 2rem 1.5rem;
-            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.05);
-            text-align: center;
-            transition: transform 0.2s ease;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        /* Заголовок с тенью (индивидуальное задание 4 – тени, размеры шрифтов) */
-        h1 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #1e293b, #2d3e50);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.05);
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.3px;
-        }
-
-        .subhead {
-            color: #4b5563;
-            font-size: 1rem;
-            border-bottom: 2px solid #e2e8f0;
-            display: inline-block;
-            padding-bottom: 6px;
-            margin-bottom: 2rem;
-            font-weight: 500;
-        }
-
-        /* Контейнер для квадратов – грид с адаптивом */
-        .squares-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1.8rem;
-            margin: 2.2rem 0;
-        }
-
-        /* Базовый стиль квадратов: размеры, тени, рамки */
-        .color-square {
+        /* Квадраты */
+        .square {
             width: 150px;
             height: 150px;
-            border-radius: 28px;
             cursor: pointer;
-            transition: all 0.25s ease-in-out;
-            box-shadow: 0 12px 18px -8px rgba(0, 0, 0, 0.3);
-            border: 2px solid rgba(255, 255, 255, 0.6);
-            backdrop-filter: brightness(1.02);
+            border: 2px solid #333;
         }
 
-        /* Индивидуальные цвета для каждого квадрата */
-        .square-red {
-            background-color: #e11d48; /* яркий малиново-красный */
-        }
-        .square-green {
-            background-color: #10b981; /* изумрудный зелёный */
-        }
-        .square-blue {
-            background-color: #3b82f6; /* насыщенный синий */
-        }
-
-        /* Эффекты при наведении (требование из задания 4: изменение цвета при наведении + усиление тени) */
-        .color-square:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 28px 30px -12px rgba(0, 0, 0, 0.4);
-            filter: brightness(1.05);
-            border: 2px solid white;
-        }
-
-        /* Активный клик – небольшая пульсация */
-        .color-square:active {
-            transform: scale(0.96);
-            transition: 0.05s;
-        }
-
-        /* Информационная карточка с дополнительным стайлингом */
-        .info-area {
-            background: #f8fafc;
-            border-radius: 2rem;
-            padding: 1rem 1.5rem;
-            margin-top: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-            border: 1px solid #e2edff;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
-        }
-
-        .current-color-label {
-            font-weight: 600;
-            background: #eef2ff;
-            padding: 8px 18px;
-            border-radius: 100px;
-            color: #1e293b;
-            font-size: 0.9rem;
-            letter-spacing: 0.3px;
-        }
-
-        .current-color-label span {
-            color: #3b82f6;
-            font-weight: 800;
-            text-transform: uppercase;
-        }
-
-        .reset-btn {
-            background: white;
-            border: 1px solid #cbd5e1;
-            padding: 8px 20px;
-            border-radius: 60px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            color: #334155;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-        }
-
-        .reset-btn:hover {
-            background-color: #f1f5f9;
-            border-color: #94a3b8;
-            transform: scale(0.97);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-        }
-
-        /* Адаптивная верстка – для мобильных устройств */
-        @media (max-width: 580px) {
-            .color-square {
-                width: 110px;
-                height: 110px;
-                border-radius: 20px;
-            }
-            .squares-grid {
-                gap: 1rem;
-            }
-            h1 {
-                font-size: 1.8rem;
-            }
-            .color-panel {
-                padding: 1.5rem;
-            }
-        }
-
-        /* Дополнительная анимация для появления секции – плавность */
-        .color-panel {
-            animation: fadeSlideUp 0.5s ease-out;
-        }
-
-        @keyframes fadeSlideUp {
-            from {
-                opacity: 0;
-                transform: translateY(25px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Подвал – мелочь для эстетики */
-        footer {
-            margin-top: 2rem;
-            font-size: 0.75rem;
-            color: #5b6e8c;
-            text-align: center;
-            background: rgba(255,255,240,0.5);
-            padding: 6px 12px;
-            border-radius: 60px;
-            backdrop-filter: blur(4px);
-        }
+        /* Цвета квадратов */
+        .red { background-color: red; }
+        .green { background-color: green; }
+        .blue { background-color: blue; }
     </style>
 </head>
 <body>
 
-<div class="color-panel">
-    <h1>🎨 Цветная магия</h1>
-    <div class="subhead">нажми на любой квадрат — фон изменится</div>
-
-    <!-- Три квадрата: красный, зелёный, синий (цвета строго по заданию) -->
-    <div class="squares-grid">
-        <div class="color-square square-red" data-color="#e11d48" data-name="Красный"></div>
-        <div class="color-square square-green" data-color="#10b981" data-name="Зелёный"></div>
-        <div class="color-square square-blue" data-color="#3b82f6" data-name="Синий"></div>
-    </div>
-
-    <!-- Интерактивная информационная панель, показывает текущий цвет + кнопка сброса -->
-    <div class="info-area">
-        <div class="current-color-label">
-            🎯 Текущий фон: <span id="activeColorDisplay">по умолчанию</span>
-        </div>
-        <button id="resetBackgroundBtn" class="reset-btn" aria-label="Сбросить фон">
-            ↻ Сбросить фон
-        </button>
-    </div>
-    <footer>
-        ✨ Кликни по квадрату — фон окрасится в его цвет. Стили с тенями, рамками и hover-эффектами.
-    </footer>
+<div class="container">
+    <div class="square red"></div>
+    <div class="square green"></div>
+    <div class="square blue"></div>
 </div>
 
 <script>
-    // ДОБАВЛЯЕМ полную интерактивность
-    // 1) Получаем элементы DOM
-    const bodyElement = document.body;
-    const squares = document.querySelectorAll('.color-square');
-    const activeColorSpan = document.getElementById('activeColorDisplay');
-    const resetBtn = document.getElementById('resetBackgroundBtn');
-
-    // 2) Начальный цвет фона (по умолчанию светло-серо-голубой из CSS)
-    const defaultBackgroundColor = '#f0f2f5';   // соответствует изначальному body
-    // синхронизируем отображение текста
-    activeColorSpan.textContent = 'исходный (светлый)';
-    // установим атрибут для хранения, если нужно (просто для порядка)
-
-    // 3) Функция смены фона с обновлением текстового индикатора
-    function changeBackgroundColor(colorHex, colorName) {
-        if (!colorHex) return;
-        // меняем фон body
-        bodyElement.style.backgroundColor = colorHex;
-        // обновляем текстовую метку: показываем название цвета и его HEX значение
-        if (colorName) {
-            activeColorSpan.textContent = `${colorName} (${colorHex})`;
-        } else {
-            activeColorSpan.textContent = colorHex;
-        }
-        // (опционально) небольшое визуальное удовольствие — можно добавить, но главное выполнено
-        // добавляем легкую "пульсацию" для обратной связи (мягкая анимация не помешает)
-        bodyElement.style.transition = 'background-color 0.3s ease';
-    }
-
-    // 4) Сброс фона до исходного цвета
-    function resetToDefaultBackground() {
-        bodyElement.style.backgroundColor = defaultBackgroundColor;
-        activeColorSpan.textContent = 'исходный (светлый)';
-        // дополнительно: убираем возможные остаточные стили
-        bodyElement.style.transition = 'background-color 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1)';
-    }
-
-    // 5) Навешиваем обработчики событий на каждый квадрат
-    // Используем современный метод addEventListener (как описано в методичке, стр 11-12)
-    // для каждого квадрата добавляем слушатель click
+    // Находим все квадраты
+    const squares = document.querySelectorAll('.square');
+    
+    // Для каждого квадрата добавляем обработчик клика
     squares.forEach(square => {
-        // получаем цвет из data-атрибута (можно и из класса, но так надежнее)
-        let colorValue = '';
-        let colorTitle = '';
-
-        // определяем цвет на основе классов / data атрибутов
-        if (square.classList.contains('square-red')) {
-            colorValue = '#e11d48';
-            colorTitle = 'Красный';
-        } else if (square.classList.contains('square-green')) {
-            colorValue = '#10b981';
-            colorTitle = 'Зелёный';
-        } else if (square.classList.contains('square-blue')) {
-            colorValue = '#3b82f6';
-            colorTitle = 'Синий';
-        } else {
-            // fallback, если вдруг изменим разметку
-            colorValue = square.getAttribute('data-color') || '#888888';
-            colorTitle = square.getAttribute('data-name') || 'цвет';
-        }
-
-        // Добавляем обработчик события 'click' (события мыши, стр.11)
-        square.addEventListener('click', function(event) {
-            // При клике меняем цвет фона страницы на цвет квадрата
-            changeBackgroundColor(colorValue, colorTitle);
-            // Можно добавить микро-анимацию для нажатия (и так есть :active в CSS)
-            // Дополнительно: выводим в консоль информацию о действии (необязательно)
-            console.log(`🎨 Фон изменён на ${colorTitle} (${colorValue})`);
+        square.addEventListener('click', function() {
+            // Берём цвет квадрата и меняем фон страницы
+            const color = window.getComputedStyle(square).backgroundColor;
+            document.body.style.backgroundColor = color;
         });
     });
-
-    // 6) Событие для кнопки сброса (обработчик через addEventListener)
-    if (resetBtn) {
-        resetBtn.addEventListener('click', function() {
-            resetToDefaultBackground();
-            console.log('🔄 Сброс фона до исходного значения');
-            // Также можно добавить легкий визуальный фидбек на кнопку (не требуется, но приятно)
-            // например вспышка текста
-            const originalText = activeColorSpan.innerText;
-            activeColorSpan.style.opacity = '0.7';
-            setTimeout(() => {
-                activeColorSpan.style.opacity = '1';
-            }, 150);
-        });
-    }
-
-    // 7) Соответствие требованиям «тени, рамки, изменение цвета при наведении» – уже реализованы в CSS.
-    //    Так же выполняется индивидульное задание по стилизации: рамки, тени, hover-эффекты, размеры шрифтов.
-
-    // 8) Бонусом: при загрузке страницы фон уже красивый, и всё работает без ошибок.
-    //    И никаких сторонних библиотек – только чистый HTML/CSS/JS.
-    //    Также учитываем, что в методологии указано, что квадраты должны перекрашивать фон в свой цвет.
-    //    Это выполнено в полной мере.
-
-    // 9) Дополнительная адаптивность: квадраты становятся меньше на узких экранах.
-    //    Плюс сохранение центрирования – готово благодаря flex/grid.
-
-    // 10) Дополнительно реализовано удобство: отображение текущего активного цвета и его названия.
-    //     Все индивидуальные части (CSS-тени, рамки, эффекты при наведении, управление фоном) реализованы.
-    console.log('✅ Страница готова: три квадрата меняют фон. Используй современные события click!');
 </script>
+
 </body>
 </html>
 ```
+
+## Что делает программа:
+
+1. **Три квадрата** — красный, зелёный, синий
+2. **При клике** на любой квадрат фон страницы становится такого же цвета
+3. Квадраты имеют рамку для наглядности
+
+## Как это работает:
+
+- `querySelectorAll` — находим все элементы с классом `square`
+- `addEventListener('click', ...)` — ждём клика на каждом квадрате
+- `getComputedStyle` — получаем настоящий цвет квадрата
+- `document.body.style.backgroundColor` — меняем цвет фона страницы
+
+Готово — просто, понятно, работает!
